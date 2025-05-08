@@ -108,6 +108,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""KillEnemy"",
+                    ""type"": ""Button"",
+                    ""id"": ""2f3f9e68-e662-445e-b33d-1bdc062332d3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -231,6 +240,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4afe4e1b-6579-4212-86f4-12db4a19ac72"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KillEnemy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -241,6 +261,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
         m_Default_Move = m_Default.FindAction("Move", throwIfNotFound: true);
         m_Default_Look = m_Default.FindAction("Look", throwIfNotFound: true);
+        m_Default_KillEnemy = m_Default.FindAction("KillEnemy", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -323,6 +344,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IDefaultActions> m_DefaultActionsCallbackInterfaces = new List<IDefaultActions>();
     private readonly InputAction m_Default_Move;
     private readonly InputAction m_Default_Look;
+    private readonly InputAction m_Default_KillEnemy;
     /// <summary>
     /// Provides access to input actions defined in input action map "Default".
     /// </summary>
@@ -342,6 +364,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Default/Look".
         /// </summary>
         public InputAction @Look => m_Wrapper.m_Default_Look;
+        /// <summary>
+        /// Provides access to the underlying input action "Default/KillEnemy".
+        /// </summary>
+        public InputAction @KillEnemy => m_Wrapper.m_Default_KillEnemy;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -374,6 +400,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @KillEnemy.started += instance.OnKillEnemy;
+            @KillEnemy.performed += instance.OnKillEnemy;
+            @KillEnemy.canceled += instance.OnKillEnemy;
         }
 
         /// <summary>
@@ -391,6 +420,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @KillEnemy.started -= instance.OnKillEnemy;
+            @KillEnemy.performed -= instance.OnKillEnemy;
+            @KillEnemy.canceled -= instance.OnKillEnemy;
         }
 
         /// <summary>
@@ -445,5 +477,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLook(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "KillEnemy" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnKillEnemy(InputAction.CallbackContext context);
     }
 }

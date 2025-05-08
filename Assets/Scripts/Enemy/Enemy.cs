@@ -38,6 +38,7 @@ public class Enemy : MonoBehaviour
 
     public void KillEnemy()
     {
+        StopAllCoroutines();
         Destroy(gameObject);
     }
 }

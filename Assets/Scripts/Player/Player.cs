@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +19,8 @@ public class Player : MonoBehaviour
     {
         inputHandler = GetComponent<PlayerInputHandler>();
         characterController = GetComponent<CharacterController>();
+
+        inputHandler.OnKillEnemyPerformed += InputHandler_OnKillEnemyPerformed;
     }
 
     private void Update()
@@ -51,5 +54,21 @@ public class Player : MonoBehaviour
         // Apply vertical camera rotation
         float rotationAngle = inputHandler.GetLookDelta().y * LOOK_MOVEMENT_MULTIPLIER;
         playerCamera.transform.RotateAround(transform.position, transform.right, -rotationAngle);
+    }
+
+    private void InputHandler_OnKillEnemyPerformed(object sender, System.EventArgs e)
+    {
+        Enemy closestEnemy = FindClosestEnemy();
+        if (closestEnemy != null)
+        {
+            closestEnemy.KillEnemy();
+        }
+    }
+
+    private Enemy FindClosestEnemy()
+    {
+        return FindObjectsByType<Enemy>(FindObjectsSortMode.None)
+            .OrderBy(e => Vector3.Distance(transform.position, e.transform.position))
+            .FirstOrDefault();
     }
 }
