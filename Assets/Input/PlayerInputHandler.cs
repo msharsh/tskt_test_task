@@ -15,7 +15,7 @@ public class PlayerInputHandler : MonoBehaviour
         return inputActions.Default.Move.ReadValue<Vector2>().normalized;
     }
 
-    public Vector2 GetMouseDelta()
+    public Vector2 GetLookDelta()
     {
         return inputActions.Default.Look.ReadValue<Vector2>();
     }
