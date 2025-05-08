@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(PlayerInputHandler))]
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class Player : MonoBehaviour
 {
     [Header("Camera")]

@@ -5,9 +5,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private Enemy enemyPrefab;
 
+    /// <summary>
+    /// Spawns an enemy at a random position around the player
+    /// </summary>
     public void SpawnEnemy()
     {
-        Instantiate(enemyPrefab.gameObject, FindEnemySpawnPosition(), Quaternion.identity);
+        Enemy enemy = Instantiate(enemyPrefab, FindEnemySpawnPosition(), Quaternion.identity);
+        enemy.SetTargetPlayer(player);
     }
 
     /// <summary>
