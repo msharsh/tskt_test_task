@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     private PlayerInputHandler inputHandler;
     private CharacterController characterController;
 
+    private float downwardSpeed;
     private float currentHealth;
     
 
@@ -57,6 +58,17 @@ public class Player : MonoBehaviour
         Vector3 moveForward = transform.forward * inputHandler.GetMoveVector().y;
         Vector3 moveRight = transform.right * inputHandler.GetMoveVector().x;
         Vector3 moveVector = (moveForward + moveRight) * 10f;
+
+        // Gravity
+        if (characterController.isGrounded)
+        {
+            downwardSpeed = 0f;
+        }
+        else
+        {
+            downwardSpeed -= 9.81f * Time.deltaTime;
+        }
+        moveVector.y = downwardSpeed;
 
         characterController.Move(moveVector * Time.deltaTime);
 

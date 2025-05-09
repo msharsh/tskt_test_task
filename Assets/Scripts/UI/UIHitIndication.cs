@@ -14,7 +14,7 @@ public class UIHitIndication : MonoBehaviour
     {
         player.OnPlayerDamaged += Player_OnPlayerDamaged;
         originalAlpha = hitIndicator.color.a;
-        SetHitIndicatorAlpha(0);
+        SetHitIndicatorAlphaPercent(0);
     }
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e)
@@ -29,7 +29,7 @@ public class UIHitIndication : MonoBehaviour
         float timeElapsed = 0;
         while (timeElapsed < duration / 2)
         {
-            SetHitIndicatorAlpha(2 * timeElapsed / duration);
+            SetHitIndicatorAlphaPercent(2 * timeElapsed / duration);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
@@ -38,17 +38,21 @@ public class UIHitIndication : MonoBehaviour
         timeElapsed = 0;
         while (timeElapsed < duration / 2)
         {
-            SetHitIndicatorAlpha(1 - 2 * timeElapsed / duration);
+            SetHitIndicatorAlphaPercent(1 - 2 * timeElapsed / duration);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
-        SetHitIndicatorAlpha(0f);
+        SetHitIndicatorAlphaPercent(0f);
     }
 
-    private void SetHitIndicatorAlpha(float alpha)
+    /// <summary>
+    /// Changes alpha of hit indicator image.
+    /// </summary>
+    /// <param name="percent"></param>
+    private void SetHitIndicatorAlphaPercent(float percent)
     {
         Color originalColor = hitIndicator.color;
-        hitIndicator.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha * originalAlpha);
+        hitIndicator.color = new Color(originalColor.r, originalColor.g, originalColor.b, percent * originalAlpha);
     }
 }

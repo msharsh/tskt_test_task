@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float outerRadius = 20f;
 
     private const int MAX_OVERLAP_CHECK_COUNT = 10;
-    private const float GROUND_DISTANCE_CHECK = 10f;
+    private const float DISTANCE_TO_GROUND_CHECK = 10f;
 
     private float enemyRadius;
     private float enemyHalfHeight;
@@ -77,7 +77,7 @@ public class EnemySpawner : MonoBehaviour
     private bool IsSpawnpointSuitable(Vector3 point)
     {
         // Ground check
-        if (!Physics.Linecast(point, point + Vector3.down * GROUND_DISTANCE_CHECK))
+        if (!Physics.Linecast(point, point + Vector3.down * DISTANCE_TO_GROUND_CHECK))
             return false;
 
         // Collision check
