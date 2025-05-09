@@ -1,25 +1,27 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float projectileDamage;
 
+    private Rigidbody rb;
+
     private void Awake()
     {
-        StartCoroutine(SetLifetime(10f));
+        rb = GetComponent<Rigidbody>();
+        rb.linearVelocity = transform.forward * projectileSpeed;
+
+        // Set lifetime
+        Destroy(gameObject, 10f);
     }
 
-    private void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        transform.position = transform.position + transform.forward * projectileSpeed * Time.deltaTime;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Player player = other.gameObject.GetComponent<Player>();
-        if (player != null)
+        // Apply damage to player
+        if (collision.gameObject.TryGetComponent<Player>(out var player))
         {
             player.ApplyDamage(projectileDamage);
         }
@@ -27,19 +29,8 @@ public class Projectile : MonoBehaviour
         DestroyProjectile();
     }
 
-    /// <summary>
-    /// Destroys projectile after <paramref name="lifetime"/> seconds.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator SetLifetime(float lifetime)
-    {
-        yield return new WaitForSeconds(lifetime);
-        DestroyProjectile();
-    }
-
     private void DestroyProjectile()
     {
-        StopAllCoroutines();
         Destroy(gameObject);
     }
 }
