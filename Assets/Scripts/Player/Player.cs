@@ -8,6 +8,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Player : MonoBehaviour
 {
+    public event EventHandler OnPlayerDamaged;
     public event EventHandler<OnHealthChangedEventArgs> OnHealthChanged;
     public class OnHealthChangedEventArgs : EventArgs
     {
@@ -101,6 +102,7 @@ public class Player : MonoBehaviour
     public void ApplyDamage(float damage)
     {
         SetHealth(Mathf.Max(currentHealth - damage, 0f));
+        OnPlayerDamaged?.Invoke(this, EventArgs.Empty);
     }
 
     private void SetHealth(float health)
