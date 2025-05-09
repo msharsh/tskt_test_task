@@ -65,8 +65,8 @@ public class EnemySpawner : MonoBehaviour
     {
         float distance = Random.Range(innerRadius, outerRadius);
         Vector2 randomPointOnCircle = Random.insideUnitCircle.normalized * distance;
-        Vector3 randomPointOnCircle3D = new Vector3(randomPointOnCircle.x, player.transform.position.y, randomPointOnCircle.y);
-        return player.transform.position + randomPointOnCircle3D;
+        Vector3 randomPointOnCircleVector3 = new Vector3(randomPointOnCircle.x, 0f, randomPointOnCircle.y);
+        return player.transform.position + randomPointOnCircleVector3;
     }
 
     /// <summary>

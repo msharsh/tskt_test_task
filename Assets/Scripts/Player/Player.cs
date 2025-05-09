@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [Header("Player Stats")]
     [SerializeField] private float playerSpeed = 10f;
+    [Tooltip("If enabled, player doesn't lose health.")]
+    [SerializeField] private bool enableInvincibility = false;
     [SerializeField] private float maxHealth = 100f;
 
     private const float LOOK_MOVEMENT_MULTIPLIER = 0.1f;
@@ -46,7 +48,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         HandleMovement();
-        HandleCameraMovement();
+        //HandleCameraMovement();
     }
 
     /// <summary>
@@ -113,7 +115,8 @@ public class Player : MonoBehaviour
     /// <param name="damage"></param>
     public void ApplyDamage(float damage)
     {
-        SetHealth(Mathf.Max(currentHealth - damage, 0f));
+        if (!enableInvincibility)
+            SetHealth(Mathf.Max(currentHealth - damage, 0f));
         OnPlayerDamaged?.Invoke(this, EventArgs.Empty);
     }
 

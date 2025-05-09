@@ -19,6 +19,9 @@ public class UIHitIndication : MonoBehaviour
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e)
     {
+        if (!gameObject.activeSelf)
+            return;
+
         StopAllCoroutines();
         StartCoroutine(ImageBlink());
     }
@@ -54,5 +57,10 @@ public class UIHitIndication : MonoBehaviour
     {
         Color originalColor = hitIndicator.color;
         hitIndicator.color = new Color(originalColor.r, originalColor.g, originalColor.b, percent * originalAlpha);
+    }
+
+    private void OnDisable()
+    {
+        SetHitIndicatorAlphaPercent(0);
     }
 }
