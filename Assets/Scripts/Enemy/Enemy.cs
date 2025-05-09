@@ -5,6 +5,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private Projectile projectilePrefab;
+    [SerializeField] private Transform projectileSpawnPoint;
+
     private NavMeshAgent agent;
     private Player targetPlayer;
 
@@ -16,6 +19,7 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         StartCoroutine(UpdatePlayerPosition());
+        StartCoroutine(LaunchProjectile());
     }
 
     private IEnumerator UpdatePlayerPosition()
@@ -28,6 +32,20 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
+    /// Spawns a projectile every second
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator LaunchProjectile()
+    {
+        while (true)
+        {
+            Quaternion rotationToTarget = Quaternion.LookRotation(targetPlayer.transform.position - transform.position);
+            Instantiate(projectilePrefab, projectileSpawnPoint.position, rotationToTarget);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    /// <summary>
     /// Sets Player reference to which move to
     /// </summary>
     /// <param name="targetPlayer"></param>
@@ -36,6 +54,9 @@ public class Enemy : MonoBehaviour
         this.targetPlayer = targetPlayer;
     }
 
+    /// <summary>
+    /// Kills an enemy
+    /// </summary>
     public void KillEnemy()
     {
         StopAllCoroutines();

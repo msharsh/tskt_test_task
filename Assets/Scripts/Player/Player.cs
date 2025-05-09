@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,13 +8,25 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Player : MonoBehaviour
 {
+    public event EventHandler<OnHealthChangedEventArgs> OnHealthChanged;
+    public class OnHealthChangedEventArgs : EventArgs
+    {
+        public float newHealth;
+    }
+
     [Header("Camera")]
     [SerializeField] private Camera playerCamera;
+    [Header("Player Stats")]
+    [SerializeField] private float playerSpeed = 10f;
+    [SerializeField] private float maxHealth = 100f;
+
+    private const float LOOK_MOVEMENT_MULTIPLIER = 0.1f;
 
     private PlayerInputHandler inputHandler;
     private CharacterController characterController;
 
-    private const float LOOK_MOVEMENT_MULTIPLIER = 0.1f;
+    private float currentHealth;
+    
 
     private void Awake()
     {
@@ -23,6 +36,11 @@ public class Player : MonoBehaviour
         inputHandler.OnKillEnemyPerformed += InputHandler_OnKillEnemyPerformed;
     }
 
+    private void Start()
+    {
+        SetHealth(maxHealth);
+    }
+
     private void Update()
     {
         HandleMovement();
@@ -30,7 +48,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles player movement based on input
+    /// Handles player movement based on input.
     /// </summary>
     private void HandleMovement()
     {
@@ -47,7 +65,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles camera movement based on input
+    /// Handles camera movement based on input.
     /// </summary>
     private void HandleCameraMovement()
     {
@@ -56,7 +74,7 @@ public class Player : MonoBehaviour
         playerCamera.transform.RotateAround(transform.position, transform.right, -rotationAngle);
     }
 
-    private void InputHandler_OnKillEnemyPerformed(object sender, System.EventArgs e)
+    private void InputHandler_OnKillEnemyPerformed(object sender, EventArgs e)
     {
         Enemy closestEnemy = FindClosestEnemy();
         if (closestEnemy != null)
@@ -65,10 +83,34 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns reference to closest enemy, <c>null</c> if there are no enemies.
+    /// </summary>
+    /// <returns></returns>
     private Enemy FindClosestEnemy()
     {
         return FindObjectsByType<Enemy>(FindObjectsSortMode.None)
             .OrderBy(e => Vector3.Distance(transform.position, e.transform.position))
             .FirstOrDefault();
     }
+
+    /// <summary>
+    /// Applies damage to the player.
+    /// </summary>
+    /// <param name="damage"></param>
+    public void ApplyDamage(float damage)
+    {
+        SetHealth(Mathf.Max(currentHealth - damage, 0f));
+    }
+
+    private void SetHealth(float health)
+    {
+        currentHealth = health;
+        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs
+        {
+            newHealth = currentHealth
+        });
+    }
+
+    public float GetMaxHealth() { return maxHealth; }
 }
