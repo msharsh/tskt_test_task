@@ -63,4 +63,9 @@ public class UIHitIndication : MonoBehaviour
     {
         SetHitIndicatorAlphaPercent(0);
     }
+
+    private void OnDestroy()
+    {
+        player.OnPlayerDamaged -= Player_OnPlayerDamaged;
+    }
 }

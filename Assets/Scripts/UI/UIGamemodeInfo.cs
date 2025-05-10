@@ -6,11 +6,11 @@ public class UIGamemodeInfo : MonoBehaviour
     [SerializeField] private RectTransform gamemodeInfoWindow;
     [SerializeField] private TextMeshProUGUI infoText;
 
-    private readonly string classicInfo = 
+    private string classicInfo = 
         "\t- Infinite health\n\t- Enemies spawn on button click";
 
-    private readonly string survivalInfo =
-        "\t- Limited health\n\t- Game ends after player loses all of his health\n\t- Enemies spawn continuously";
+    private string survivalInfo =
+        "\t- Limited health\n\t- Game ends after player loses all of his health\n\t- Enemies spawn continuously\n\t- Highscore: ";
 
     public void ShowGamemodeClassicInfo()
     {
@@ -21,7 +21,18 @@ public class UIGamemodeInfo : MonoBehaviour
     public void ShowGamemodeSurvivalInfo()
     {
         gamemodeInfoWindow.gameObject.SetActive(true);
-        infoText.text = survivalInfo;
+
+        string highscore;
+        if (PlayerPrefs.HasKey("highscore"))
+        {
+            highscore = UIPlayerSurvivalTimer.TimeToString(PlayerPrefs.GetFloat("highscore"));
+        }
+        else
+        {
+            highscore = "not set yet";
+        }
+
+        infoText.text = survivalInfo + highscore;
     }
 
     public void HideGamemodeInfo()

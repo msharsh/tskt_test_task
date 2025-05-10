@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     {
         public float newHealth;
     }
+    public event EventHandler OnPlayerDefeated;
 
     [Header("Camera")]
     [SerializeField] private Camera playerCamera;
@@ -74,9 +75,12 @@ public class Player : MonoBehaviour
 
         characterController.Move(moveVector * Time.deltaTime);
 
-        // Applying rotation from input
-        float rotationAngle = inputHandler.GetLookDelta().x * LOOK_MOVEMENT_MULTIPLIER;
-        transform.Rotate(Vector3.up, rotationAngle);
+        if (!PauseManager.Instance.IsPaused())
+        {
+            // Applying rotation from input
+            float rotationAngle = inputHandler.GetLookDelta().x * LOOK_MOVEMENT_MULTIPLIER;
+            transform.Rotate(Vector3.up, rotationAngle);
+        }
     }
 
     /// <summary>
@@ -118,6 +122,11 @@ public class Player : MonoBehaviour
         if (!enableInvincibility)
             SetHealth(Mathf.Max(currentHealth - damage, 0f));
         OnPlayerDamaged?.Invoke(this, EventArgs.Empty);
+
+        if (currentHealth == 0f)
+        {
+            OnPlayerDefeated?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void SetHealth(float health)
@@ -130,4 +139,9 @@ public class Player : MonoBehaviour
     }
 
     public float GetMaxHealth() { return maxHealth; }
+
+    private void OnDestroy()
+    {
+        inputHandler.OnKillEnemyPerformed -= InputHandler_OnKillEnemyPerformed;
+    }
 }
