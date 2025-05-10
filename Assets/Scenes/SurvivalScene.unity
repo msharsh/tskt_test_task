@@ -366,7 +366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &123258429
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2768,6 +2768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 2000526704}
   playerSpeed: 10
+  enableInvincibility: 0
   maxHealth: 100
 --- !u!4 &1646041189
 Transform:
@@ -3308,6 +3309,9 @@ MonoBehaviour:
   enemyPrefab: {fileID: 4193466348535588898, guid: 1b7bb77ed762a204c86582efa55fa3c3, type: 3}
   innerRadius: 10
   outerRadius: 20
+  enableContinuousEnemySpawning: 1
+  initialSpawnRate: 1
+  spawnRateIncrease: 1.01
 --- !u!4 &1953141071
 Transform:
   m_ObjectHideFlags: 0

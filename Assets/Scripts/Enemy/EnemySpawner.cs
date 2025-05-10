@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,6 +9,13 @@ public class EnemySpawner : MonoBehaviour
     [Header("Spawn Parameters")]
     [SerializeField] private float innerRadius = 10f;
     [SerializeField] private float outerRadius = 20f;
+    [Header("Survival")]
+    [SerializeField] private bool enableContinuousEnemySpawning = false;
+    [Tooltip("First enemy will spawn after this amount of seconds")]
+    [SerializeField] private float initialSpawnTime = 1f;
+    [Tooltip("Next enemy will appear so many times faster")]
+    [SerializeField] private float spawnTimeIncrease = 1.01f;
+    [SerializeField] private float mixSpawnTime = 0.2f;
 
     private const int MAX_OVERLAP_CHECK_COUNT = 10;
     private const float DISTANCE_TO_GROUND_CHECK = 10f;
@@ -15,11 +23,29 @@ public class EnemySpawner : MonoBehaviour
     private float enemyRadius;
     private float enemyHalfHeight;
 
+    private float enemySpawnRate;
+
     private void Awake()
     {
         NavMeshAgent enemyNavAgent = enemyPrefab.GetComponent<NavMeshAgent>();
         enemyRadius = enemyNavAgent.radius;
         enemyHalfHeight = enemyNavAgent.height / 2;
+
+        if (enableContinuousEnemySpawning )
+        {
+            enemySpawnRate = initialSpawnTime;
+            StartCoroutine(SpawnEnemyContinuous());
+        }
+    }
+
+    private IEnumerator SpawnEnemyContinuous()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(enemySpawnRate);
+            SpawnEnemy();
+            enemySpawnRate = Mathf.Max(enemySpawnRate / spawnTimeIncrease, mixSpawnTime);
+        }
     }
 
     /// <summary>
@@ -43,7 +69,7 @@ public class EnemySpawner : MonoBehaviour
     private bool FindEnemySpawnPosition(out Vector3 position)
     {
         Vector3 spawnPoint = FindRandomPointAroundPlayer();
-        int checkCount = 0;
+        int checkCount = 0;     // Exit loop if can't find suitable position
 
         while (!IsSpawnpointSuitable(spawnPoint) && checkCount < MAX_OVERLAP_CHECK_COUNT)
         {
@@ -61,6 +87,10 @@ public class EnemySpawner : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Finds random point around player in Oxz plane in given <c>innerRadius</c> and <c>outerRadius</c>.
+    /// </summary>
+    /// <returns></returns>
     private Vector3 FindRandomPointAroundPlayer()
     {
         float distance = Random.Range(innerRadius, outerRadius);

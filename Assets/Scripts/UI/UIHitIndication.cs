@@ -50,7 +50,7 @@ public class UIHitIndication : MonoBehaviour
     }
 
     /// <summary>
-    /// Changes alpha of hit indicator image.
+    /// Changes alpha of hit indicator image on percentage basis.
     /// </summary>
     /// <param name="percent"></param>
     private void SetHitIndicatorAlphaPercent(float percent)
