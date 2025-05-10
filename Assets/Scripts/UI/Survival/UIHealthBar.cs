@@ -18,4 +18,9 @@ public class UIHealthBar : MonoBehaviour
         else
             healthBar.fillAmount = 0;
     }
+
+    private void OnDestroy()
+    {
+        player.OnHealthChanged -= Player_OnHealthChanged;
+    }
 }

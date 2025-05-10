@@ -32,4 +32,9 @@ public class UIPlayerSurvivalTimer : MonoBehaviour
         PlayerPrefs.SetFloat("highscore", highscore);
         PlayerPrefs.Save();
     }
+
+    private void OnDestroy()
+    {
+        player.OnPlayerDefeated -= Player_OnPlayerDefeated;
+    }
 }
