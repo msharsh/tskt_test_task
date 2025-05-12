@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float projectileDamage;
+    [SerializeField] private float projectileLifetime = 10f;
 
     private Rigidbody rb;
 
@@ -15,7 +16,7 @@ public class Projectile : MonoBehaviour
         rb.linearVelocity = transform.forward * projectileSpeed;
 
         // Set lifetime
-        Destroy(gameObject, 10f);
+        Destroy(gameObject, projectileLifetime);
     }
 
     private void OnCollisionEnter(Collision collision)

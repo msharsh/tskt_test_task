@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float maxHealth = 100f;
 
     private const float LOOK_MOVEMENT_MULTIPLIER = 0.1f;
+    private const float GRAVITY = 9.81f;
 
     private PlayerInputHandler inputHandler;
     private CharacterController characterController;
@@ -68,7 +69,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            downwardSpeed -= 9.81f * Time.deltaTime;
+            downwardSpeed -= GRAVITY * Time.deltaTime;
         }
         moveVector.y = downwardSpeed;
 

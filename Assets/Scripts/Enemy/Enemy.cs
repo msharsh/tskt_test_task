@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private Transform projectileSpawnPoint;
+    [Tooltip("Delay in seconds between shots")]
+    [SerializeField] private float fireDelay = 1f;
     [SerializeField] private VisualEffect deathEffect;
 
     private NavMeshAgent agent;
@@ -34,7 +36,7 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a projectile every second.
+    /// Fires a projectile with constant rate.
     /// </summary>
     /// <returns></returns>
     private IEnumerator LaunchProjectile()
@@ -43,7 +45,7 @@ public class Enemy : MonoBehaviour
         {
             Quaternion rotationToTarget = Quaternion.LookRotation(targetPlayer.transform.position - transform.position);
             Instantiate(projectilePrefab, projectileSpawnPoint.position, rotationToTarget);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(fireDelay);
         }
     }
 

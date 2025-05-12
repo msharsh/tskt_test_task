@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float initialSpawnTime = 1f;
     [Tooltip("Next enemy will appear so many times faster")]
     [SerializeField] private float spawnTimeIncrease = 1.01f;
-    [SerializeField] private float mixSpawnTime = 0.2f;
+    [SerializeField] private float minSpawnTime = 0.2f;
 
     private const int MAX_OVERLAP_CHECK_COUNT = 10;
     private const float DISTANCE_TO_GROUND_CHECK = 10f;
@@ -44,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(enemySpawnRate);
             SpawnEnemy();
-            enemySpawnRate = Mathf.Max(enemySpawnRate / spawnTimeIncrease, mixSpawnTime);
+            enemySpawnRate = Mathf.Max(enemySpawnRate / spawnTimeIncrease, minSpawnTime);
         }
     }
 
@@ -113,6 +113,6 @@ public class EnemySpawner : MonoBehaviour
         // Collision check
         Vector3 capsuleStart = point - Vector3.up * (enemyHalfHeight - enemyRadius);
         Vector3 capsuleEnd = point + Vector3.up * (enemyHalfHeight - enemyRadius);
-        return !Physics.CheckCapsule(capsuleStart, capsuleEnd, 0.5f);
+        return !Physics.CheckCapsule(capsuleStart, capsuleEnd, enemyRadius);
     }
 }
