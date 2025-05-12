@@ -1,1 +1,0 @@
-# tskt_test_task

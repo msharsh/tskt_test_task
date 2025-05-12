@@ -212,3 +212,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 4588406929465430601, guid: 8900d4a960fd5f34794562a891daae46, type: 3}
   projectileSpawnPoint: {fileID: 3214354167593226811}
+  deathEffect: {fileID: 7772318697927059333, guid: 682bc565deb61f647a4fdb8c27b8107a, type: 3}

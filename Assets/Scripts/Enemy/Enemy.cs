@@ -1,12 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VFX;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private Transform projectileSpawnPoint;
+    [SerializeField] private VisualEffect deathEffect;
 
     private NavMeshAgent agent;
     private Player targetPlayer;
@@ -32,7 +34,7 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a projectile every second
+    /// Spawns a projectile every second.
     /// </summary>
     /// <returns></returns>
     private IEnumerator LaunchProjectile()
@@ -46,7 +48,7 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets Player reference to which move to
+    /// Sets Player reference to which move to.
     /// </summary>
     /// <param name="targetPlayer"></param>
     public void SetTargetPlayer(Player targetPlayer)
@@ -55,10 +57,15 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// Kills an enemy
+    /// Kills an enemy.
     /// </summary>
     public void KillEnemy()
     {
+        // Spawn death VFX
+        VisualEffect vfxInstance = Instantiate(deathEffect, transform.position, transform.rotation);
+        Destroy(vfxInstance.gameObject, 1f);
+
+        // Destroy this gameobject
         StopAllCoroutines();
         Destroy(gameObject);
     }

@@ -10,7 +10,8 @@ public class UIGamemodeInfo : MonoBehaviour
         "\t- Infinite health\n\t- Enemies spawn on button click";
 
     private string survivalInfo =
-        "\t- Limited health\n\t- Game ends after player loses all of his health\n\t- Enemies spawn continuously\n\t- Highscore: ";
+        "\t- Limited health\n\t- Game ends after player loses all of his health" +
+        "\n\t- Enemies spawn continuously with increasing spawn rate\n\t- Highscore: ";
 
     public void ShowGamemodeClassicInfo()
     {

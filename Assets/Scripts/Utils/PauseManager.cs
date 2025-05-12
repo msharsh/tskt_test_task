@@ -6,8 +6,6 @@ public class PauseManager : MonoBehaviour
 
     private void Awake()
     {
-        ResumeGame();
-
         if (Instance == null)
         {
             Instance = this;
@@ -16,6 +14,8 @@ public class PauseManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        ResumeGame();
     }
 
     /// <summary>
